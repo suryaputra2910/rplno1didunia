@@ -11,33 +11,25 @@ type Props = {
 
 const DropBarangButton = ({ id }: Props) => {
     const router = useRouter();
-
     const handleDelete = async () => {
         console.log("DELETE CLICKED", id);
-
         if (!id) {
             alert("ID tidak ditemukan");
             return;
         }
-
         const confirmDelete = window.confirm("Yakin hapus barang ini?");
         if (!confirmDelete) return;
 
         try {
             const token = getCookie("token");
-
             await axios.delete(
                 `${BASE_API_URL}/admin/hapusbarang/${id}`,
                 {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    headers: { Authorization: `Bearer ${token}` }
                 }
             );
 
             alert("Berhasil hapus");
-
-            // lebih clean dari reload
             router.refresh();
 
         } catch (err: any) {
