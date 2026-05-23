@@ -28,16 +28,12 @@ const FormBarang = ({
     const [harga, setHarga] = useState(formData?.harga || 0);
     const [stok, setStok] = useState(formData?.stok || 0);
     const [image, setImage] = useState<File | null>(null);
-
     const router = useRouter();
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const token = getCookie("token");
-
         const data = new FormData();
-
         data.append("nama_barang", nama);
         data.append("deskripsi", deskripsi);
         data.append("harga", String(harga));
@@ -46,11 +42,9 @@ const FormBarang = ({
         if (image) {
             data.append("image", image);
         }
-
         if (id) {
             data.append("id", String(id));
         }
-
         try {
             if (id) {
                 await axios.post(`${BASE_API_URL}/admin/updatebarang/${id}`, data, {
@@ -59,7 +53,6 @@ const FormBarang = ({
                         "Content-Type": "multipart/form-data"
                     }
                 })
-
                 toast("Berhasil update", {
                     containerId: "barang",
                     type: "success",
@@ -72,14 +65,12 @@ const FormBarang = ({
                         "Content-Type": "multipart/form-data"
                     }
                 });
-
                 toast("Berhasil tambah", {
                     containerId: "barang",
                     type: "success",
                     autoClose: 20
                 });
             }
-
             setIsOpen(false);
             setNama("");
             setDeskripsi("");
@@ -88,7 +79,6 @@ const FormBarang = ({
             setImage(null);
 
             router.refresh();
-
         } catch (err: any) {
             toast(err?.response?.data?.message || "Gagal", {
                 containerId: "barang",
@@ -97,17 +87,13 @@ const FormBarang = ({
             });
         }
     };
-
+    
     return (
         <div>
-
-
             <button onClick={() => setIsOpen(true)} className={className}>
                 {label}
             </button>
-
             <ToastContainer containerId="barang" />
-
 
             <Modal
                 isOpen={isOpen}
@@ -115,21 +101,18 @@ const FormBarang = ({
                 title={id ? "Edit Barang" : "Tambah Barang"}
             >
                 <form onSubmit={handleSubmit} className="space-y-4">
-
                     <input
                         value={nama}
                         onChange={(e) => setNama(e.target.value)}
                         placeholder="Nama Barang"
                         className="text-black w-full border p-2"
                     />
-
                     <input
                         value={deskripsi}
                         onChange={(e) => setDeskripsi(e.target.value)}
                         placeholder="Deskripsi"
                         className="text-black w-full border p-2"
                     />
-
                     <input
                         value={harga}
                         onChange={(e) => setHarga(Number(e.target.value))}
@@ -137,7 +120,6 @@ const FormBarang = ({
                         placeholder="Harga"
                         className="text-black w-full border p-2"
                     />
-
                     <input
                         value={stok}
                         onChange={(e) => setStok(Number(e.target.value))}
@@ -145,15 +127,12 @@ const FormBarang = ({
                         placeholder="Stok"
                         className="text-black w-full border p-2"
                     />
-
-
                     {formData?.image && !image && (
                         <img
                             src={`${URL_IMAGE}/${formData.image}`}
                             className="w-24 h-24 object-cover"
                         />
                     )}
-
                     <input
                         type="file"
                         accept="image/*"
@@ -162,7 +141,6 @@ const FormBarang = ({
                         }
                         className="text-black w-full border p-2"
                     />
-
                     <div className="flex justify-end">
                         <button
                             type="submit"
